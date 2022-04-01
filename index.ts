@@ -1,10 +1,26 @@
+import bodyParser from "body-parser";
+import cors from "cors";
 import express from "express";
-const app = express();
+import helmet from "helmet";
+import swaggerUi from "swagger-ui-express";
+import UserRouter from "./entities/user/router.user";
+import connectDB from "./services/connectDB";
 
-app.use("*", (req: express.Request, res: express.Response) => {
-  res.status(200).json({
-    success: true,
-  });
-});
+const swaggerDocument = require(`${__dirname.replace(
+  "public",
+  "swagger.json"
+)}`);
+
+connectDB();
+
+const app = express();
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(cors());
+app.use(helmet());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+//routers
+app.use("/api/user", UserRouter);
 
 app.listen(process.env.PORT || 3000);
