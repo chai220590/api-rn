@@ -110,8 +110,6 @@ const register = async (req: Request, res: Response) => {
     const newUser = new UserModal(requestUserInfo);
     newUser.save();
 
-    newUser.password = "";
-
     return res.status(200).json(<ResponseSuccess>{
       success: true,
       data: newUser,

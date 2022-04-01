@@ -82,7 +82,6 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         requestUserInfo.status = "ACTIVE";
         const newUser = new model_user_1.default(requestUserInfo);
         newUser.save();
-        newUser.password = "";
         return res.status(200).json({
             success: true,
             data: newUser,

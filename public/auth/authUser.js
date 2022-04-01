@@ -17,7 +17,7 @@ const authUser = (req, res, next) => {
             });
         }
         const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_KEY);
-        req.tokenInfo = decoded;
+        // req.tokenInfo = decoded;
     }
     catch (err) {
         return res.status(401).json({
