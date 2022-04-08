@@ -14,6 +14,8 @@ export interface User {
   password: string;
   role: "ADMIN" | "USER";
   status: "ACTIVE" | "UNACTIVE" | "DELETE";
+  createDate: string | undefined;
+  avatar: string;
 }
 
 const UserSchema = new Schema<User>({
@@ -35,6 +37,15 @@ const UserSchema = new Schema<User>({
     type: String,
     enum: ["ACTIVE", "UNACTIVE", "DELETE"],
     default: "ACTIVE",
+  },
+  createDate: {
+    type: Date,
+    default: Date.now(),
+  },
+  avatar: {
+    type: String,
+    default:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaK4zfz4SxPaBo6CIwLLxUZ5tby1Q_1uuuug&usqp=CAU",
   },
 });
 

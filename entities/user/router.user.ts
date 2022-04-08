@@ -9,5 +9,6 @@ UserRouter.post("/login", UserController.login);
 UserRouter.get("/", UserController.getList);
 UserRouter.get("/:userId", UserController.getUserByID);
 UserRouter.put("/changePassword", authUser, UserController.changePassword);
+UserRouter.delete("/delete/:userId", UserController.deleteById);
 
 export default UserRouter;

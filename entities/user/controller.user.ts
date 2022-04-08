@@ -4,6 +4,7 @@ import UserModal, { User } from "./model.user";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { TokenInfo } from "../../auth/authUser";
+import avatarList from "./avatar.user";
 dotenv.config();
 
 declare var process: {
@@ -81,7 +82,9 @@ const login = async (req: Request, res: Response) => {
 const register = async (req: Request, res: Response) => {
   try {
     const requestUserInfo: User = req.body;
-
+    const ranNumber: number =
+      parseInt((Math.random() * avatarList.length).toFixed()) || 0;
+    const newAvatar = avatarList[ranNumber];
     //validate body request
     if (
       requestUserInfo.username.length === 0 ||
@@ -106,6 +109,7 @@ const register = async (req: Request, res: Response) => {
     //insert to db
     requestUserInfo.role = "USER";
     requestUserInfo.status = "ACTIVE";
+    requestUserInfo.avatar = newAvatar;
 
     const newUser = new UserModal(requestUserInfo);
     newUser.save();
@@ -124,7 +128,15 @@ const register = async (req: Request, res: Response) => {
 
 const getList = async (req: Request, res: Response) => {
   try {
-    const userList = await UserModal.find({}, "username status role");
+    const userList = await UserModal.find(
+      {},
+      "username status role avatar createDate",
+      {
+        sort: {
+          createDate: -1,
+        },
+      }
+    );
 
     return res.status(200).json(<ResponseSuccess>{
       success: true,
@@ -148,7 +160,7 @@ const getUserByID = async (req: Request, res: Response) => {
       {
         _id: userId,
       },
-      "username status role"
+      "username status role avatar createDate"
     );
 
     if (!user) {
@@ -214,12 +226,32 @@ const changePassword = async (req: any, res: Response) => {
   }
 };
 
+const deleteById = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    await UserModal.deleteOne({
+      _id: userId,
+    });
+    return res.status(200).json(<ResponseSuccess>{
+      success: true,
+      data: null,
+      message: "Delete user success",
+    });
+  } catch (error) {
+    return res.status(400).json(<ResponseFail>{
+      success: false,
+      error,
+    });
+  }
+};
+
 const UserController = {
   register,
   login,
   getList,
   getUserByID,
   changePassword,
+  deleteById,
 };
 
 export default UserController;

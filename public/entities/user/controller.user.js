@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const model_user_1 = __importDefault(require("./model.user"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const avatar_user_1 = __importDefault(require("./avatar.user"));
 dotenv_1.default.config();
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -62,6 +63,8 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const requestUserInfo = req.body;
+        const ranNumber = parseInt((Math.random() * avatar_user_1.default.length).toFixed()) || 0;
+        const newAvatar = avatar_user_1.default[ranNumber];
         //validate body request
         if (requestUserInfo.username.length === 0 ||
             requestUserInfo.password.length === 0) {
@@ -80,6 +83,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         //insert to db
         requestUserInfo.role = "USER";
         requestUserInfo.status = "ACTIVE";
+        requestUserInfo.avatar = newAvatar;
         const newUser = new model_user_1.default(requestUserInfo);
         newUser.save();
         return res.status(200).json({
@@ -96,7 +100,11 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userList = yield model_user_1.default.find({}, "username status role");
+        const userList = yield model_user_1.default.find({}, "username status role avatar createDate", {
+            sort: {
+                createDate: -1,
+            },
+        });
         return res.status(200).json({
             success: true,
             data: {
@@ -116,7 +124,7 @@ const getUserByID = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const { userId } = req.params;
         const user = yield model_user_1.default.findOne({
             _id: userId,
-        }, "username status role");
+        }, "username status role avatar createDate");
         if (!user) {
             throw `Not found by userId = ${userId}`;
         }
@@ -176,11 +184,31 @@ const changePassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     }
 });
+const deleteById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.params;
+        yield model_user_1.default.deleteOne({
+            _id: userId,
+        });
+        return res.status(200).json({
+            success: true,
+            data: null,
+            message: "Delete user success",
+        });
+    }
+    catch (error) {
+        return res.status(400).json({
+            success: false,
+            error,
+        });
+    }
+});
 const UserController = {
     register,
     login,
     getList,
     getUserByID,
     changePassword,
+    deleteById,
 };
 exports.default = UserController;

@@ -12,4 +12,5 @@ UserRouter.post("/login", controller_user_1.default.login);
 UserRouter.get("/", controller_user_1.default.getList);
 UserRouter.get("/:userId", controller_user_1.default.getUserByID);
 UserRouter.put("/changePassword", authUser_1.default, controller_user_1.default.changePassword);
+UserRouter.delete("/delete/:userId", controller_user_1.default.deleteById);
 exports.default = UserRouter;
