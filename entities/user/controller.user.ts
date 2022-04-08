@@ -41,7 +41,7 @@ const login = async (req: Request, res: Response) => {
         username: loginInfo.username,
         password: loginInfo.password,
       },
-      "username status role"
+      "username status role avatar createDate"
     );
 
     if (!currentUser) {
