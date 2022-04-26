@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import express from 'express';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 
@@ -8,6 +9,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.use(helmet());
   app.enableCors();
+  app.use(express.static(__dirname + '/public'));
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Learning React Native API')
