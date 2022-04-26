@@ -18,7 +18,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
   @Get()
   getAll() {
-    this.userService.getAll();
+    return this.userService.getAll();
   }
   @Get(':userId')
   @Bind(Param('userId'))
