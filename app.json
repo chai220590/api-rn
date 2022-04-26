@@ -3,7 +3,7 @@
   "description": "Api Learning React Native",
   "website": "",
   "repository": "https://github.com/chai220590/api-rn",
-  "logo": "https://app.tooljet.io/assets/images/logo.svg",
+  "logo": "",
   "success_url": "/",
   "scripts": {
     "predeploy": "npm install && npm run build"
