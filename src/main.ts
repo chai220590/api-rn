@@ -9,7 +9,6 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.use(helmet());
   app.enableCors();
-  app.use(express.static(__dirname + '/public'));
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Learning React Native API')
