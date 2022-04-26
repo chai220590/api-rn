@@ -2,7 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
-
+import * as dotenv from 'dotenv';
+dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
@@ -14,6 +15,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
-  await app.listen(process.env.PORT || 80);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
