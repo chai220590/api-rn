@@ -25,7 +25,7 @@ export class AuthMiddleware implements NestMiddleware {
       next();
     } catch (error) {
       console.log(error);
-      return res.status(error.name === 'TokenExpiredError' ? 403 : 401).json({
+      return res.status(error.name === 'TokenExpiredError' ? 401 : 403).json({
         success: false,
         error: typeof error == 'string' ? error : 'error.unauthorized',
       } as SysResponse);

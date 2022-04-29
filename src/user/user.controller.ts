@@ -9,7 +9,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ChangePasswordCTO, CreateUserCTO, LoginInfoCTO } from './user.cto';
+import {
+  ChangePasswordCTO,
+  CreateUserCTO,
+  LoginInfoCTO,
+  RefreshTokenCTO,
+} from './user.cto';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -17,6 +22,7 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
   @Get()
+  @ApiBearerAuth()
   getAll() {
     return this.userService.getAll();
   }
@@ -35,9 +41,8 @@ export class UserController {
     return this.userService.register(createUserCTO);
   }
   @Post('/refresh')
-  @ApiBearerAuth()
-  refreshToken() {
-    return this.userService.refreshToken();
+  refreshToken(@Body() { token }: RefreshTokenCTO) {
+    return this.userService.refreshToken(token);
   }
 
   @Put('/changePassword')

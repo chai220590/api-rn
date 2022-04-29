@@ -22,13 +22,19 @@ import { UserService } from './user.service';
 })
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes({
-      path: 'user/changePassword',
-      method: RequestMethod.PUT,
-    });
-    consumer.apply(RefreshMiddleware).forRoutes({
-      path: 'user/refresh',
-      method: RequestMethod.POST,
-    });
+    consumer.apply(AuthMiddleware).forRoutes(
+      {
+        path: 'user/changePassword',
+        method: RequestMethod.PUT,
+      },
+      {
+        path: 'user',
+        method: RequestMethod.GET,
+      },
+    );
+    // consumer.apply(RefreshMiddleware).forRoutes({
+    //   path: 'user/refresh',
+    //   method: RequestMethod.POST,
+    // });
   }
 }

@@ -9,6 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthMiddleware } from './middleware/auth';
 import { UserModule } from './user/user.module';
+import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { UserModule } from './user/user.module';
     UserModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [AppGateway],
 })
 export class AppModule {}

@@ -7,6 +7,12 @@ import { ChangePasswordCTO, CreateUserCTO, LoginInfoCTO } from './user.cto';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { REQUEST } from '@nestjs/core';
 import { Request, Response, response } from 'express';
+
+interface RefreshToken {
+  exp: number;
+  userId: string;
+}
+
 @Injectable()
 export class UserService {
   constructor(
@@ -15,14 +21,17 @@ export class UserService {
     @Inject(REQUEST) private readonly request: Request,
   ) {}
 
-  async refreshToken() {
+  async refreshToken(token: string) {
     try {
-      const authInfo = this.request.authInfo as {
-        userId: string;
-      };
+      const jwtDecode: RefreshToken | any = this.jwtService.decode(token);
+
+      if (Date.now() > jwtDecode.exp * 1000) {
+        throw '_';
+      }
+
       const accessToken = this.jwtService.sign(
         {
-          userId: authInfo.userId,
+          userId: jwtDecode.userId,
         },
 
         { expiresIn: '30s', secret: process.env.ACCESS_TOKEN_KEY },
@@ -30,7 +39,7 @@ export class UserService {
 
       const refeshToken = this.jwtService.sign(
         {
-          userId: authInfo.userId,
+          userId: jwtDecode.userId,
         },
         { expiresIn: '60s', secret: process.env.ACCESS_TOKEN_KEY_RF },
       );
@@ -42,7 +51,10 @@ export class UserService {
         },
       } as SysResponse;
     } catch (error) {
-      return new UnauthorizedException();
+      return {
+        success: false,
+        message: 'refreshing fail',
+      } as SysResponse;
     }
   }
 

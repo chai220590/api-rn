@@ -23,3 +23,8 @@ export class ChangePasswordCTO {
   @ApiProperty()
   newPassword: string;
 }
+
+export class RefreshTokenCTO {
+  @ApiProperty()
+  token: string;
+}
