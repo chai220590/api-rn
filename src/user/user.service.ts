@@ -34,14 +34,14 @@ export class UserService {
           userId: jwtDecode.userId,
         },
 
-        { expiresIn: '30s', secret: process.env.ACCESS_TOKEN_KEY },
+        { expiresIn: '1h', secret: process.env.ACCESS_TOKEN_KEY },
       );
 
       const refeshToken = this.jwtService.sign(
         {
           userId: jwtDecode.userId,
         },
-        { expiresIn: '60s', secret: process.env.ACCESS_TOKEN_KEY_RF },
+        { expiresIn: '2h', secret: process.env.ACCESS_TOKEN_KEY_RF },
       );
       return {
         success: true,
@@ -187,14 +187,14 @@ export class UserService {
           userId: checkUser._id,
         },
 
-        { expiresIn: '30s', secret: process.env.ACCESS_TOKEN_KEY },
+        { expiresIn: '1h', secret: process.env.ACCESS_TOKEN_KEY },
       );
 
       const refeshToken = this.jwtService.sign(
         {
           userId: checkUser._id,
         },
-        { expiresIn: '60s', secret: process.env.ACCESS_TOKEN_KEY_RF },
+        { expiresIn: '2h', secret: process.env.ACCESS_TOKEN_KEY_RF },
       );
 
       return {
