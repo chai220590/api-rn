@@ -212,34 +212,35 @@ export class UserService {
 
   async getAll() {
     try {
-      var serviceAccount = require('../../serviceAccountKey.json');
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-      });
-      const message = {
-        token:
-          'faxjhJ0JSsue0kLLmvjcbk:APA91bEuWe55mH3gyPf3oxFNJhbFEdgb0-MF5pxgMXpjTw5vx4BPuJxOuyGj9oHbblR0jbeB8jLm7NJ76bHK2KalRI6GovoHo4oOfx9QMrCATWX1gUhbl4fuMLEmq4PGYhitMaXHXQQA',
-      };
-      var payload = {
-        notification: {
-          title: 'This is a Notification',
-          body: 'This is the body of the notification message.',
-        },
-      };
+      // var serviceAccount = require('../../serviceAccountKey.json');
+      // admin.initializeApp({
+      //   credential: admin.credential.cert(serviceAccount),
+      // });
+      // const message = {
+      //   token:
+      //     'faxjhJ0JSsue0kLLmvjcbk:APA91bEuWe55mH3gyPf3oxFNJhbFEdgb0-MF5pxgMXpjTw5vx4BPuJxOuyGj9oHbblR0jbeB8jLm7NJ76bHK2KalRI6GovoHo4oOfx9QMrCATWX1gUhbl4fuMLEmq4PGYhitMaXHXQQA',
+      // };
+      // var payload = {
+      //   notification: {
+      //     title: 'This is a Notification',
+      //     body: 'This is the body of the notification message.',
+      //   },
+      // };
 
-      var options = {
-        priority: 'high',
-        timeToLive: 60 * 60 * 24,
-      };
-      admin
-        .messaging()
-        .sendToDevice(message.token, payload, options)
-        .then((rs) => {
-          console.log('Successfully sent message:', rs);
-        })
-        .catch(function (error) {
-          console.log('Error sending message:', error);
-        });
+      // var options = {
+      //   priority: 'high',
+      //   timeToLive: 60 * 60 * 24,
+      // };
+      // admin
+      //   .messaging()
+      //   .sendToDevice(message.token, payload, options)
+      //   .then((rs) => {
+      //     console.log('Successfully sent message:', rs);
+      //   })
+      //   .catch(function (error) {
+      //     console.log('Error sending message:', error);
+      //   });
+
       const userList = await this.userModel
         .find({}, ['username', 'createDate', 'avatar', 'role', 'status'])
         .sort({
