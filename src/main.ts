@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
@@ -12,7 +13,16 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
-  // app.use(helmet());
+  const defaultDirectives = helmet.contentSecurityPolicy.getDefaultDirectives();
+  delete defaultDirectives['upgrade-insecure-requests'];
+
+  app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        ...defaultDirectives,
+      },
+    }),
+  );
   await app.listen(process.env.PORT || 22220);
 }
 bootstrap();
