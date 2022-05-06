@@ -5,7 +5,6 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
-  app.use(helmet());
   app.enableCors();
   const config = new DocumentBuilder()
     .addBearerAuth()
@@ -13,6 +12,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
+  app.use(helmet());
   await app.listen(process.env.PORT || 22220);
 }
 bootstrap();
